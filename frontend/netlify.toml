@@ -1,3 +1,7 @@
 [build]
-  command = "npm run build"  # Ou "ng build --prod" se você não estiver usando o script npm
-  publish = "dist"  # Essa é a pasta de saída do build do Angular
+  publish = "dist/frontend"
+  command = "npm run build"
+
+[dev]
+  command = "npm run start"
+  port = 8888
