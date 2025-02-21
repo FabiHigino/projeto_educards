@@ -1,0 +1,60 @@
+.container {
+  margin: 20px;
+}
+
+.cartas-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.carta {
+  width: 180px; /* Ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.carta img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+button {
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  background-color: #f3ede0; /* Cor de fundo */
+  color: #000000; /* Cor do texto */
+}
+
+mat-card {
+  padding: 5px;
+  width: 180px;
+  text-align: center;
+}
+
+mat-card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carta.selecionada {
+  border: 2px solid #007bff;  /* Cor de borda para cartas selecionadas */
+  background-color: #f0f8ff;   /* Fundo levemente azul para destacar */
+}
+
+.carta {
+  cursor: pointer;
+}
+
+.button {
+  margin-top: 20px;
+  width: 120px;
+  background-color: #f3ede0; /* Cor de fundo */
+  color: #000000; /* Cor do texto */
+}

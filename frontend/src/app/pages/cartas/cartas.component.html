@@ -1,0 +1,25 @@
+<div class="container">
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Filtrar por categoria</mat-label>
+    <mat-select [(value)]="categoriaSelecionada" (selectionChange)="filtrarCartas()">
+      <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+        {{ categoria }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+  <button mat-raised-button color="primary" (click)="imprimirCartas()" class="button">Imprimir Selecionadas</button>
+  <div *ngFor="let categoria of categorias">
+    <h3>{{ categoria }}</h3>
+    <div class="cartas-container">
+      <div *ngFor="let carta of cartasFiltradas" class="carta"
+           [class.selecionada]="isSelecionada(carta)"
+           (click)="toggleSelecionar(carta)">
+        <mat-card>
+          <img mat-card-image [src]="carta.imagem" alt="{{ carta.titulo }}">
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</div>

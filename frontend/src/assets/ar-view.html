@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      #scanning-overlay {
+        position: fixed; /* Alinha ao topo da tela e mantém fixo enquanto a câmera se move */
+        top: 50%; /* Posiciona verticalmente no meio da tela */
+        left: 50%; /* Posiciona horizontalmente no meio da tela */
+        transform: translate(-50%, -50%); /* Ajusta para garantir que o centro esteja realmente no meio */
+        width: 200px; /* Tamanho fixo para a sobreposição */
+        height: 100px; /* Tamanho fixo */
+        background: rgba(0, 0, 0, 0.5); /* Cor de fundo com transparência */
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-family: Arial, sans-serif;
+        z-index: 1000; /* Garante que a sobreposição fique na frente da cena 3D */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scanning-overlay">Aponte para a carta EduCards</div>
+
+    <script>
+      async function carregarCartas() {
+        try {
+          let response = await fetch("http://127.0.0.1:8000/api/cartas/");
+          let cartas = await response.json();
+          console.log("Cartas carregadas:", cartas);
+
+          if (cartas.length === 0) {
+            console.error("Nenhuma carta encontrada.");
+            return;
+          }
+
+          cartas.forEach((carta) => {
+            let sceneContainer = document.createElement("div");
+            sceneContainer.style.position = "absolute";
+            sceneContainer.style.top = "0";
+            sceneContainer.style.left = "0";
+            sceneContainer.style.width = "100%";
+            sceneContainer.style.height = "100%";
+
+            let scene = document.createElement("a-scene");
+            scene.setAttribute("mindar-image", `imageTargetSrc: ${carta.mind_target}; uiError:no; uiLoading:no; uiScanning:no`);
+            scene.setAttribute("color-space", "sRGB");
+            scene.setAttribute("renderer", "colorManagement: true, physicallyCorrectLights");
+            scene.setAttribute("vr-mode-ui", "enabled: false");
+            scene.setAttribute("device-orientation-permission-ui", "enabled: false");
+
+            let assetsContainer = document.createElement("a-assets");
+            scene.appendChild(assetsContainer);
+
+            let camera = document.createElement("a-camera");
+            camera.setAttribute("position", "0 0 0");
+            camera.setAttribute("look-controls", "enabled: false");
+            scene.appendChild(camera);
+
+            let modelElement = document.createElement("a-asset-item");
+            modelElement.setAttribute("id", `model-${carta.id}`);
+            modelElement.setAttribute("src", carta.modelo_3d);
+            assetsContainer.appendChild(modelElement);
+
+            let entity = document.createElement("a-entity");
+            entity.setAttribute("mindar-image-target", "targetIndex: 0");
+
+            let model = document.createElement("a-gltf-model");
+            model.setAttribute("src", `#model-${carta.id}`);
+            model.setAttribute("position", "0 0 0");
+            model.setAttribute("scale", "0.6 0.6 0.6");
+            model.setAttribute("rotation", "0 0 0");
+            model.setAttribute(
+              "animation",
+              "property: rotation; to: 0 360 0; dur: 7000; easing: linear; loop: true"
+            );
+
+            let light = document.createElement("a-light");
+            light.setAttribute("type", "directional");
+            light.setAttribute("intensity", "1.5");
+            light.setAttribute("position", "1 1 1");
+
+            entity.appendChild(model);
+            scene.appendChild(entity);
+            scene.appendChild(light);
+            sceneContainer.appendChild(scene);
+            document.body.appendChild(sceneContainer);
+
+            // Eventos para esconder/mostrar UI de digitalização
+            entity.addEventListener("targetFound", () => {
+              document.getElementById("scanning-overlay").style.display = "none";
+            });
+
+            entity.addEventListener("targetLost", () => {
+              document.getElementById("scanning-overlay").style.display = "flex";
+            });
+          });
+        } catch (error) {
+          console.error("Erro ao carregar as cartas:", error);
+        }
+      }
+
+      carregarCartas();
+    </script>
+  </body>
+</html>
