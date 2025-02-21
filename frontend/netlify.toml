@@ -1,7 +1,7 @@
 [build]
+  command = "npm ci && npm run build"
   publish = "dist/frontend"
-  command = "npm run build"
-
+  
 [dev]
   command = "npm run start"
   port = 8888
