@@ -1,0 +1,3 @@
+[build]
+  command = "npm run build"  # Ou "ng build --prod" se você não estiver usando o script npm
+  publish = "dist"  # Essa é a pasta de saída do build do Angular
