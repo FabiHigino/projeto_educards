@@ -1,25 +1,41 @@
 <div class="container">
-  <!-- <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill">
     <mat-label>Filtrar por categoria</mat-label>
-    <mat-select [(value)]="categoriaSelecionada" (selectionChange)="filtrarCartas()">
+    <mat-select [(ngModel)]="categoriaSelecionada" (selectionChange)="filtrarCartas()">
+      <mat-option value="">Todas</mat-option>
       <mat-option *ngFor="let categoria of categorias" [value]="categoria">
         {{ categoria }}
       </mat-option>
     </mat-select>
-  </mat-form-field> -->
+  </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="imprimirCartas()" class="button">Imprimir Selecionadas</button>
+  <div class="buttons-impress">
+    <button mat-raised-button color="primary" (click)="selecionarTodasCartas()">
+      {{ todasSelecionadas ? 'Desmarcar Todas' : 'Selecionar Todas' }}
+    </button>
+
+    <button mat-raised-button color="primary" (click)="imprimirCartas()">
+      Imprimir Selecionadas
+    </button>
+  </div>
+
+  <div *ngIf="cartasFiltradas.length === 0">
+    <p>Nenhuma carta encontrada.</p>
+  </div>
+
+  <!-- Exibição das cartas por categoria -->
   <div *ngFor="let categoria of categorias">
     <h3>{{ categoria }}</h3>
     <div class="cartas-container">
-      <div *ngFor="let carta of cartasFiltradas" class="carta"
-           [class.selecionada]="isSelecionada(carta)"
-           (click)="toggleSelecionar(carta)">
-        <mat-card>
-          <img mat-card-image [src]="carta.imagem" alt="{{ carta.titulo }}">
-        </mat-card>
-      </div>
+      <ng-container *ngFor="let carta of cartasFiltradas">
+        <div *ngIf="carta.categoria === categoria" class="carta"
+             [class.selecionada]="isSelecionada(carta)" 
+             (click)="toggleSelecionar(carta)">
+          <mat-card>
+            <img mat-card-image [src]="carta.imagem" alt="{{ carta.titulo }}">
+          </mat-card>
+        </div>
+      </ng-container>
     </div>
   </div>
-
 </div>

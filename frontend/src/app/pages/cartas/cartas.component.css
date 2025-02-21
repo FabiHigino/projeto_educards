@@ -24,7 +24,7 @@
 }
 
 button {
-  margin-top: 20px;
+  margin: 10px;
   display: block;
   width: 100%;
   background-color: #f3ede0; /* Cor de fundo */
@@ -57,4 +57,11 @@ mat-card-content {
   width: 120px;
   background-color: #f3ede0; /* Cor de fundo */
   color: #000000; /* Cor do texto */
+}
+
+
+.buttons-impress{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
