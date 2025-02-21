@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/jasmine": "^5.1.6",
+    "tslib": "^2.8.1"
+  },
+  "dependencies": {
+    "aframe": "^1.6.0",
+    "mind-ar": "^1.2.5"
+  }
+}
